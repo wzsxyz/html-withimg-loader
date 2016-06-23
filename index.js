@@ -5,7 +5,7 @@ var loaderUtils = require("loader-utils");
 
 module.exports = function(fileContent) {
 	var query = loaderUtils.parseQuery(this.query);
-	fileContent = query.min === false?fileContent.replace(/\n/g, '\\n'):fileContent.replace(/\n/g, '');
+	fileContent = query.min === false?fileContent:fileContent.replace(/\n/g, '');
 	fileContent = JSON.stringify(fileContent);
 	if(query.deep !== false) fileContent = loadDeep(fileContent, this.query);
 	return "module.exports = "+replaceSrc(fileContent);
