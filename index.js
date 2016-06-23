@@ -4,16 +4,23 @@ var path = require('path');
 var loaderUtils = require("loader-utils");
 
 module.exports = function(fileContent) {
+	
 	var query = loaderUtils.parseQuery(this.query);
 	fileContent = query.min === false?fileContent:fileContent.replace(/\n/g, '');
-	fileContent = JSON.stringify(fileContent);
+	
+	if(/module\.exports\s?=/.test(fileContent)) {
+		fileContent = fileContent.replace(/module\.exports\s?=\s?/, '');
+	}
+	else fileContent = JSON.stringify(fileContent);
+
 	if(query.deep !== false) fileContent = loadDeep(fileContent, this.query);
+	
 	return "module.exports = "+replaceSrc(fileContent);
 };
 
 
 function replaceSrc(fileContent) {
-	fileContent = fileContent.replace(/\<img[^\<\>]+?src=\\?[\"\']?(\.?\.?\/)?[^\'\"\<\>]+?\\?[\'\"][^\<\>]*?\>/g, function(str){
+	fileContent = fileContent.replace(/\<img[^\<\>]+?src=\\?[\"\']?(\.?\.?\/)?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?\>/g, function(str){
 		var reg = /src=\\?[\'\"][^\"\']+\\?[\'\"]/i;
 		var regResult = reg.exec(str);
 		var imgUrl = regResult[0].replace('src=', '').replace(/[\\\'\"]/g, '');
