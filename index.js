@@ -4,7 +4,7 @@ var path = require('path');
 var loaderUtils = require("loader-utils");
 
 module.exports = function(fileContent) {
-	
+
 	var query = loaderUtils.parseQuery(this.query);
 	fileContent = query.min === false?fileContent:fileContent.replace(/\n/g, '');
 	
@@ -20,14 +20,15 @@ module.exports = function(fileContent) {
 
 
 function replaceSrc(fileContent) {
-	fileContent = fileContent.replace(/\<img[^\<\>]+?src=\\?[\"\']?(\.?\.?\/)?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?\>/g, function(str){
+	fileContent = fileContent.replace(/\<img[^\<\>]+? src=\\?[\"\']?(\.?\.?\/)?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?\>/g, function(str){
 		var reg = /src=\\?[\'\"][^\"\']+\\?[\'\"]/i;
 		var regResult = reg.exec(str);
 		var imgUrl = regResult[0].replace('src=', '').replace(/[\\\'\"]/g, '');
+		if(!imgUrl) return str; // 避免空src引起异常
 		if(!(/^[\.\/]/).test(imgUrl)) {
 			imgUrl = './' + imgUrl;
 		}
-		return str.replace(reg, "src=\"+require("+JSON.stringify(imgUrl)+")+\"");
+		return str.replace(reg, "src=\"+JSON.stringify(require("+JSON.stringify(imgUrl)+"))+\"");
 	});
 	return fileContent;
 }

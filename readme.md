@@ -51,6 +51,14 @@ github地址：https://github.com/wzsxyz/html-withimg-loader
 
 ## 更新记录：
 
+### 0.1.10
+
+* 修复img里面data-src这种属性被错误匹配、以及空的src造成编译失败的问题
+
+### 0.1.9
+
+* 修复了编译后图片路径没有引号的问题
+
 ### 0.1.8
 
 * 修复了该loader被配置多次时，文件被反复编译引起异常的问题
