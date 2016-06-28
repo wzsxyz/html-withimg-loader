@@ -39,9 +39,6 @@ ______________
     <title>示例页面</title>
     </head>
     <body>
-    <script type="text/template">
-        <div>dfde</div>
-    </script>
     <img id='test2' src='images/logo.gif' />
     <img id="test1" src="./images/test4.jpg" />
     #include("./handlebars/scripts.html")
