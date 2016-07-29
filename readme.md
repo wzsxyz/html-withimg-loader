@@ -78,7 +78,11 @@ github地址：https://github.com/wzsxyz/html-withimg-loader
 
 ## 更新记录：
 
-### 0.1.12
+### 0.1.15
+
+* 增加了对link标签href图片路径的处理
+
+### 0.1.13
 
 * 增加了exclude查询参数，用于排除特定的图片
 

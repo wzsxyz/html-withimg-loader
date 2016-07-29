@@ -20,10 +20,12 @@ module.exports = function(fileContent) {
 
 
 function replaceSrc(fileContent, exclude) {
-	fileContent = fileContent.replace(/\<img[^\<\>]*? src=\\?[\"\']?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?\>/ig, function(str){
-		var reg = /src=\\?[\'\"][^\"\']+\\?[\'\"]/i;
+	fileContent = fileContent.replace(/((\<img[^\<\>]*? src)|(\<link[^\<\>]*? href))=\\?[\"\']?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?\>/ig, function(str){
+		var reg = /((src)|(href))=\\?[\'\"][^\"\']+\\?[\'\"]/i;
 		var regResult = reg.exec(str);
-		var imgUrl = regResult[0].replace('src=', '').replace(/[\\\'\"]/g, '');
+		if(!regResult) return str;
+		var attrName = /\w+=/.exec(regResult[0])[0].replace('=', '');
+		var imgUrl = regResult[0].replace(attrName+'=', '').replace(/[\\\'\"]/g, '');
 		if(!imgUrl) return str; // 避免空src引起编译失败
 		if(/^(http(s?):)?\/\//.test(imgUrl)) return str; // 绝对路径的图片不处理
 		if(!/\.(jpg|jpeg|png|gif)/i.test(imgUrl)) return str; // 非静态图片不处理
@@ -31,10 +33,11 @@ function replaceSrc(fileContent, exclude) {
 		if(!(/^[\.\/]/).test(imgUrl)) {
 			imgUrl = './' + imgUrl;
 		}
-		return str.replace(reg, "src=\"+JSON.stringify(require("+JSON.stringify(imgUrl)+"))+\"");
+		return str.replace(reg, attrName+"=\"+JSON.stringify(require("+JSON.stringify(imgUrl)+"))+\"");
 	});
 	return fileContent;
 }
+
 
 function loadDeep(fileContent, queryStr) {
 	return fileContent.replace(/#include\(\\?[\'\"][^\'\"]+\\?[\'\"]\);?/g, function(str){
