@@ -1,6 +1,6 @@
 {
   "name": "html-withimg-loader",
-  "version": "0.1.13",
+  "version": "0.1.15",
   "description": "处理html，支持直接在html中使用img标签加载图片",
   "main": "index.js",
   "scripts": {
