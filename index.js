@@ -20,7 +20,7 @@ module.exports = function(fileContent) {
 
 
 function replaceSrc(fileContent, exclude) {
-    fileContent = fileContent.replace(/((\<img[^\<\>]*? src)|(\<link[^\<\>]*? href))[\s]*=[\s]*\\?[\"\']?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?[/]?\>/ig, function(str){
+    fileContent = fileContent.replace(/((\<img[^\<\>]*? (src|data-src))|(\<link[^\<\>]*? href))[\s]*=[\s]*\\?[\"\']?[^\'\"\<\>\+]+?\\?[\'\"][^\<\>]*?[/]?\>/ig, function(str){
     
     var reg = /\s+((src)|(href))[\s]*=[\s]*\\?[\'\"][^\"\']+\\?[\'\"]/i;
         var regResult = reg.exec(str);
