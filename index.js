@@ -37,7 +37,7 @@ function replaceSrc(fileContent, exclude) {
         if(!(/^[\.\/]/).test(imgUrl)) {
             imgUrl = './' + imgUrl;
         }
-	var res = str.replace(reg, " "+attrName+"=\"+JSON.stringify(require("+JSON.stringify(imgUrl)+"))+\"");
+	var res = str.replace(reg, " "+attrName+"=\"+JSON.stringify(require("+JSON.stringify(imgUrl)+").default)+\"");
 
         return res;
     });
